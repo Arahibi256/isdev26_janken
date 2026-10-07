@@ -11,6 +11,16 @@
   <dev th:if="${playerName}">
     <p>Hi [[${playerName}]]</p>
   </dev>
+
+  <a href="/janken/play?hand=ROCK">グー</a>
+  <a href="/janken/play?hand=SCISSORS">チョキ</a>
+  <a href="/janken/play?hand=PAPER">パー</a>
+
+  <div th:if="${result}">
+    <p>あなたの手: [[${playerHand}]]</p>
+    <p>相手の手: [[${computerHand}]]</p>
+    <p>結果: [[${result}]]</p>
+  </div>
 </body>
 
 </html>

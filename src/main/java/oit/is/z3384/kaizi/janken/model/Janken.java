@@ -45,7 +45,7 @@ public class Janken {
 
   public Janken(String playerHand) {
     this.playerHand = Hand.valueOf(playerHand.toUpperCase());
-    this.computerHand = Hand.ROCK; // コンピュータの手をグーに固定
+    this.computerHand = Hand.values()[(int) (Math.random() * 3)];
 
     // 勝敗を判定
     switch ((this.playerHand.getValue() - this.computerHand.getValue() + 3) % 3) {

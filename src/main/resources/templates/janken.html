@@ -6,7 +6,16 @@
 </head>
 
 <body>
+  <div><a href="/logout">ログアウト</a></div>
+
   <h1>Janken GAME!!</h1>
+
+  <dev th:if="${entry}">
+    <p>エントリー</p>
+    <ul>
+      <li th:each="user : ${entry.users}">[[${user}]]</li>
+    </ul>
+  </dev>
 
   <dev th:if="${playerName}">
     <p>Hi [[${playerName}]]</p>

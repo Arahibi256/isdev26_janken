@@ -33,7 +33,9 @@ public class JankenAuthConfiguration {
         .password("{bcrypt}$2y$10$0badkgXUfRiaydqcxAL7SeSbFpKprGNq7bJCTcobwiRP9F4iEDIZS").roles("USER").build();
     UserDetails user2 = User.withUsername("user2")
         .password("{bcrypt}$2y$10$Oz3MlaSQI/OKxLDREsIe1unB2JdyP8bzphd6Rff/hs90cgxmW0TI.").roles("USER").build();
+    UserDetails honda = User.withUsername("ほんだ")
+        .password("{bcrypt}$2y$10$Ycb6O/Qyqqv91ZDocZyXHeZ2j//OeSa6m1K1H4qc0sTNqPDrir4ee").roles("USER").build();
 
-    return new InMemoryUserDetailsManager(user1, user2);
+    return new InMemoryUserDetailsManager(user1, user2, honda);
   }
 }

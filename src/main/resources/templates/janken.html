@@ -15,7 +15,7 @@
   <div th:if="${entry}">
     <h2>エントリー</h2>
     <ul>
-      <li th:each="user: ${entry}">[[${user.name}]]</li>
+      <li th:each="user: ${entry}"><a th:href="@{/match(opponentId=${user.id})}">[[${user.name}]]</a></li>
     </ul>
   </div>
 

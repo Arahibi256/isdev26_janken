@@ -12,16 +12,12 @@
 
   <h3>Hi <span sec:authentication="name"></span></h3>
 
-  <dev th:if="${entry}">
+  <div th:if="${entry}">
     <p>エントリー</p>
     <ul>
-      <li th:each="user : ${entry.users}">[[${user}]]</li>
+      <li th:each="user: ${entry}">[[${user.name}]]</li>
     </ul>
-  </dev>
-
-  <a href="/janken/play?hand=ROCK">グー</a>
-  <a href="/janken/play?hand=SCISSORS">チョキ</a>
-  <a href="/janken/play?hand=PAPER">パー</a>
+  </div>
 
   <div th:if="${result}">
     <p>あなたの手: [[${playerHand}]]</p>

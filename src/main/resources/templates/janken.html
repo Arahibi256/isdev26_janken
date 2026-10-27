@@ -13,16 +13,16 @@
   <h3>Hi <span sec:authentication="name"></span></h3>
 
   <div th:if="${entry}">
-    <p>エントリー</p>
+    <h2>エントリー</h2>
     <ul>
       <li th:each="user: ${entry}">[[${user.name}]]</li>
     </ul>
   </div>
 
-  <div th:if="${result}">
-    <p>あなたの手: [[${playerHand}]]</p>
-    <p>相手の手: [[${computerHand}]]</p>
-    <p>結果: [[${result}]]</p>
+  <div th:if="${matches}">
+    <h2>試合結果</h2>
+    <p th:each="match: ${matches}">id: [[${match.id}]], user1: [[${match.user1}]], user2: [[${match.user2}]],
+      user1の手: [[${match.user1Hand}]], user2の手: [[${match.user2Hand}]]</p>
   </div>
 </body>
 

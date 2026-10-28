@@ -8,7 +8,21 @@
 <body>
   <h1>Match</h1>
 
-  <h2><span sec:authentication="name"></span> V.S. [[${opponent.name}]]</h2>
+  <div th:if="${opponent}">
+    <h2><span sec:authentication="name"></span> V.S. [[${opponent.name}]]</h2>
+
+    <a th:href="@{/fight(opponentId=${opponent.id}, hand=Rock)}">グー</a>
+    <a th:href="@{/fight(opponentId=${opponent.id}, hand=Scissors)}">チョキ</a>
+    <a th:href="@{/fight(opponentId=${opponent.id}, hand=Paper)}">パー</a>
+  </div>
+
+  <div th:if="${janken}">
+    <p>あなたの手 [[${janken.playerHand}]]</p>
+    <p>相手の手 [[${janken.computerHand}]]</p>
+    <p>結果 [[${janken.result}]]</p>
+  </div>
+
+  <p><a href="/janken">もどる</a></p>
 </body>
 
 </html>

@@ -48,17 +48,7 @@ public class Janken {
     this.computerHand = Hand.values()[(int) (Math.random() * 3)];
 
     // 勝敗を判定
-    switch ((this.playerHand.getValue() - this.computerHand.getValue() + 3) % 3) {
-      case 0:
-        this.result = Result.DRAW;
-        break;
-      case 1:
-        this.result = Result.LOSE;
-        break;
-      case 2:
-        this.result = Result.WIN;
-        break;
-    }
+    this.result = Result.values()[(this.playerHand.getValue() - this.computerHand.getValue() + 3) % 3];
   }
 
   public String getPlayerHand() {

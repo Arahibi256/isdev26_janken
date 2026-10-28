@@ -1,12 +1,12 @@
 package oit.is.z3384.kaizi.janken.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import oit.is.z3384.kaizi.janken.model.Janken;
@@ -39,12 +39,22 @@ public class JankenController {
     return "match.html";
   }
 
-  @GetMapping("/play")
-  public String playJanken(@RequestParam String hand, ModelMap model) {
+  @GetMapping("/fight")
+  public String fight(@RequestParam int opponentId, @RequestParam String hand, Principal principal, ModelMap model) {
     Janken janken = new Janken(hand);
-    model.addAttribute("playerHand", janken.getPlayerHand());
-    model.addAttribute("computerHand", janken.getComputerHand());
-    model.addAttribute("result", janken.getResult());
-    return "janken.html";
+    Match match = new Match();
+    User opponent = userMapper.selectUserById(opponentId);
+
+    match.setUser1(userMapper.selectUserByName(principal.getName()).getId());
+    match.setUser2(opponentId);
+    match.setUser1Hand(janken.getPlayerHand());
+    match.setUser2Hand(janken.getComputerHand());
+
+    matchMapper.insertMatch(match);
+
+    model.addAttribute("janken", janken);
+    model.addAttribute("opponent", opponent);
+
+    return "match.html";
   }
 }

@@ -10,7 +10,23 @@
 
   <h3>Hi <span sec:authentication="name"></span></h3>
 
-  <p><a href="/janken">もどる</a></p>
+  <div id="result" hidden></div>
+
+  <script>
+    const result = document.getElementById('result');
+    const events = new EventSource('/async');
+
+    events.addEventListener('match-result', (event) => {
+      const match = JSON.parse(event.data);
+      result.hidden = false;
+      result.innerHTML = `
+        <h2>対戦結果</h2>
+        <p>user1: ${match.user1}、手: ${match.user1Hand}</p>
+        <p>user2: ${match.user2}、手: ${match.user2Hand}</p>
+        <p><a href="/janken">もどる</a></p>`;
+      events.close();
+    });
+  </script>
 </body>
 
 </html>

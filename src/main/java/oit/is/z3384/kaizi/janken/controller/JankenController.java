@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import oit.is.z3384.kaizi.janken.AsyncKekka;
 import oit.is.z3384.kaizi.janken.model.Match;
 import oit.is.z3384.kaizi.janken.model.MatchInfo;
 import oit.is.z3384.kaizi.janken.model.MatchInfoMapper;
@@ -26,6 +28,9 @@ public class JankenController {
 
   @Autowired
   private MatchInfoMapper matchInfoMapper;
+
+  @Autowired
+  private AsyncKekka asyncKekka;
 
   @GetMapping("/janken")
   public String loggedIn(ModelMap model) {
@@ -75,5 +80,11 @@ public class JankenController {
   @GetMapping("/wait")
   public String waitForOpponent() {
     return "wait.html";
+  }
+
+  @GetMapping("/async")
+  public SseEmitter async(Principal principal) {
+    int userId = userMapper.selectUserByName(principal.getName()).getId();
+    return asyncKekka.connect(userId);
   }
 }

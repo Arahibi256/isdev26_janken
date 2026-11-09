@@ -47,14 +47,27 @@ public class JankenController {
 
   @GetMapping("/fight")
   public String fight(@RequestParam int opponentId, @RequestParam String hand, Principal principal) {
-    MatchInfo matchInfo = new MatchInfo();
+    int userId = userMapper.selectUserByName(principal.getName()).getId();
+    MatchInfo waitingMatch = matchInfoMapper.selectActiveMatchInfoByUsers(opponentId, userId);
 
-    matchInfo.setUser1(userMapper.selectUserByName(principal.getName()).getId());
-    matchInfo.setUser2(opponentId);
-    matchInfo.setUser1Hand(hand);
-    matchInfo.setActive(true);
+    if (waitingMatch == null) {
+      MatchInfo matchInfo = new MatchInfo();
+      matchInfo.setUser1(userId);
+      matchInfo.setUser2(opponentId);
+      matchInfo.setUser1Hand(hand);
+      matchInfo.setActive(true);
+      matchInfoMapper.insertMatchInfo(matchInfo);
+    } else {
+      Match match = new Match();
+      match.setUser1(waitingMatch.getUser1());
+      match.setUser2(userId);
+      match.setUser1Hand(waitingMatch.getUser1Hand());
+      match.setUser2Hand(hand);
+      match.setActive(true);
 
-    matchInfoMapper.insertMatchInfo(matchInfo);
+      matchMapper.insertMatch(match);
+      matchInfoMapper.updateMatchInfoInactive(waitingMatch.getMatchinfoid());
+    }
 
     return "wait.html";
   }

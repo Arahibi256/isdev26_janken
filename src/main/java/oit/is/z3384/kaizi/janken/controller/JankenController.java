@@ -9,8 +9,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import oit.is.z3384.kaizi.janken.model.Janken;
 import oit.is.z3384.kaizi.janken.model.Match;
+import oit.is.z3384.kaizi.janken.model.MatchInfo;
+import oit.is.z3384.kaizi.janken.model.MatchInfoMapper;
 import oit.is.z3384.kaizi.janken.model.MatchMapper;
 import oit.is.z3384.kaizi.janken.model.User;
 import oit.is.z3384.kaizi.janken.model.UserMapper;
@@ -23,11 +24,16 @@ public class JankenController {
   @Autowired
   private MatchMapper matchMapper;
 
+  @Autowired
+  private MatchInfoMapper matchInfoMapper;
+
   @GetMapping("/janken")
   public String loggedIn(ModelMap model) {
     ArrayList<User> users = userMapper.selectAllUser();
     ArrayList<Match> matches = matchMapper.selectAllMatch();
+    ArrayList<MatchInfo> matchInfos = matchInfoMapper.selectActiveMatchInfo();
     model.addAttribute("matches", matches);
+    model.addAttribute("matchInfos", matchInfos);
     model.addAttribute("entry", users);
     return "janken.html";
   }
@@ -40,21 +46,21 @@ public class JankenController {
   }
 
   @GetMapping("/fight")
-  public String fight(@RequestParam int opponentId, @RequestParam String hand, Principal principal, ModelMap model) {
-    Janken janken = new Janken(hand);
-    Match match = new Match();
-    User opponent = userMapper.selectUserById(opponentId);
+  public String fight(@RequestParam int opponentId, @RequestParam String hand, Principal principal) {
+    MatchInfo matchInfo = new MatchInfo();
 
-    match.setUser1(userMapper.selectUserByName(principal.getName()).getId());
-    match.setUser2(opponentId);
-    match.setUser1Hand(janken.getPlayerHand());
-    match.setUser2Hand(janken.getComputerHand());
+    matchInfo.setUser1(userMapper.selectUserByName(principal.getName()).getId());
+    matchInfo.setUser2(opponentId);
+    matchInfo.setUser1Hand(hand);
+    matchInfo.setActive(true);
 
-    matchMapper.insertMatch(match);
+    matchInfoMapper.insertMatchInfo(matchInfo);
 
-    model.addAttribute("janken", janken);
-    model.addAttribute("opponent", opponent);
+    return "wait.html";
+  }
 
-    return "match.html";
+  @GetMapping("/wait")
+  public String waitForOpponent() {
+    return "wait.html";
   }
 }

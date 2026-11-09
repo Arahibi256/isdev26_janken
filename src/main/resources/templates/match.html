@@ -16,12 +16,6 @@
     <a th:href="@{/fight(opponentId=${opponent.id}, hand=Paper)}">パー</a>
   </div>
 
-  <div th:if="${janken}">
-    <p>あなたの手 [[${janken.playerHand}]]</p>
-    <p>相手の手 [[${janken.computerHand}]]</p>
-    <p>結果 [[${janken.result}]]</p>
-  </div>
-
   <p><a href="/janken">もどる</a></p>
 </body>
 
